@@ -3,6 +3,8 @@ import styled from "styled-components";
 import MainCard from "../components/MainCard";
 import { useEffect } from "react";
 import Layout from "../common/Layout";
+import { signUpApi } from "../instance";
+import { useForm } from "react-hook-form";
 
 export interface postCard {
   title: string;
@@ -16,56 +18,116 @@ export interface postCard {
 }
 
 const SignUp = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  // const [alert, setAlert] = useState(false);
+  // const [content, setContent] = useState<string>();
+  // const [address, setAddress] = useState<string>();
+
+  // const postSignUp = async (payload) => {
+  //   try {
+  //     const data = await signUpApi.postSingup(payload);
+  //     console.log(data);
+  //     setAlert(true);
+  //     setContent("회원가입을 축하드립니다!");
+  //     setAddress("/");
+  //   } catch (error) {
+  //     alert(error.response.data.err);
+  //     setValue("nickName", "");
+  //   }
+  // };
+
   return (
     <Layout>
       <MainBox className="Scroll">
         <LoginBox>
           <LoginTitle>회원가입</LoginTitle>
-          <InputCtn>
+          <InputCtn
+            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
+          >
             <InputBox>
               {" "}
               <SignUpLabel>아이디</SignUpLabel>
-              <SignUpInput />
+              <SignUpInput
+                id="id"
+                type="text"
+                placeholder="아이디를 입력하세요"
+                {...register("id", {
+                  required: "아이디는 필수 입력입니다.",
+                  minLength: {
+                    value: 6,
+                    message: "6자리 이상 아이디를 사용하세요.",
+                  },
+                })}
+              />
             </InputBox>
             <InputBox>
               {" "}
               <SignUpLabel>닉네임</SignUpLabel>
-              <SignUpInput />
+              <SignUpInput
+                id="nickName"
+                type="text"
+                placeholder="닉네임를 입력하세요"
+                {...register("nickName", {
+                  required: "닉네임은 필수 입력입니다.",
+                  minLength: {
+                    value: 2,
+                    message: "2자리 이상 닉네임을 사용하세요.",
+                  },
+                })}
+              />
+            </InputBox>
+            <InputBox>
+              {" "}
+              <SignUpLabel>이메일</SignUpLabel>
+              <SignUpInput
+                id="email"
+                type="email"
+                placeholder="이메일를 입력하세요"
+                {...register("email", {
+                  required: "이메일은 필수 입력입니다.",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "이메일 형식에 맞지 않습니다.",
+                  },
+                })}
+              />
+              {/* {errors.email && <small role="alert">{errors.email.message}</small>} */}
             </InputBox>
             <InputBox>
               {" "}
               <SignUpLabel>비밀번호</SignUpLabel>
-              <SignUpInput />
+              <SignUpInput
+                id="password"
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                {...register("password", {
+                  required: "비밀번호는 필수 입력입니다.",
+                  minLength: {
+                    value: 8,
+                    message: "8자리 이상 비밀번호를 사용하세요.",
+                  },
+                })}
+              />
             </InputBox>
             <InputBox>
               {" "}
               <SignUpLabel>비밀번호 확인</SignUpLabel>
-              <SignUpInput />
+              <SignUpInput
+                id="password"
+                type="password"
+                placeholder="비밀번호를 한번 더 입력하세요"
+                {...register("password")}
+              />
             </InputBox>
-            <InputBox>
-              {" "}
-              <SignUpLabel>전화번호</SignUpLabel>
-              <SignUpInput />
-            </InputBox>
-            <InputBox>
-              {" "}
-              <SignUpLabel>나이</SignUpLabel>
-              <SignUpInput />
-            </InputBox>
-            <InputBox>
-              {" "}
-              <SignUpLabel>주소</SignUpLabel>
-              <SignUpInput />
-            </InputBox>
-            <InputBox>
-              {" "}
-              <SignUpLabel>성별</SignUpLabel>
-              <SignUpInput />
-            </InputBox>
+            <ButtonCtn>
+              <Buttons type="submit">가입 완료</Buttons>
+            </ButtonCtn>{" "}
           </InputCtn>
-          <ButtonCtn>
-            <Buttons>가입 완료</Buttons>
-          </ButtonCtn>
         </LoginBox>
       </MainBox>
     </Layout>
@@ -100,7 +162,7 @@ const LoginTitle = styled.div`
   font-size: 40px;
 `;
 
-const InputCtn = styled.div`
+const InputCtn = styled.form`
   /* background-color: green; */
   position: absolute;
   top: 20%;
@@ -135,7 +197,7 @@ const ButtonCtn = styled.div`
   justify-content: space-around;
   /* background-color: blue; */
   position: absolute;
-  top: 60%;
+  top: 90%;
   height: 5%;
   width: 80%;
 `;

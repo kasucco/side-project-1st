@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import MainCard from "../components/MainCard";
 import { useEffect } from "react";
@@ -8,10 +8,8 @@ export interface postCard {
   title: string;
   content: string;
   location: string;
-  cafe: string;
   date: string;
   time: string;
-  // map: string;
   partyMember: number;
 }
 
@@ -43,42 +41,67 @@ const Main = () => {
 
   const [items, setItems] = useState<postCard[] | null>([
     {
-      title: "1",
-      content: "2",
+      title: "제목입니다",
+      content: "내용입니다1",
       location: "3",
-      cafe: "4",
-      date: "5",
-      time: "6",
+      date: "2022/1/16~2022/1/17",
+      time: "15:00~16:00",
       partyMember: 7,
     },
     {
-      title: "2",
-      content: "2",
+      title: "제목입니다",
+      content: "내용입니다2",
       location: "2",
-      cafe: "2",
-      date: "2",
-      time: "2",
+      date: "2022/1/16~2022/1/17",
+      time: "15:00~16:00",
       partyMember: 2,
     },
     {
-      title: "1",
-      content: "2",
+      title: "제목입니다",
+      content: "내용입니다3",
       location: "3",
-      cafe: "4",
-      date: "5",
-      time: "6",
+      date: "2022/1/16~2022/1/17",
+      time: "15:00~16:00",
       partyMember: 7,
     },
     {
-      title: "1",
-      content: "2",
+      title: "제목입니다",
+      content: "내용입니다4",
       location: "3",
-      cafe: "4",
-      date: "5",
-      time: "6",
+      date: "2022/1/16~2022/1/17",
+      time: "15:00~16:00",
       partyMember: 7,
     },
   ]);
+  // const slideRef = useRef();
+  // const [count, setCount] = useState(1);
+  // const [slideList, setSlideList] = useState<object[] | undefined>([]);
+
+  // useEffect(() => {
+  //   const interval = setTimeout(() => {
+  //     setCount(() =>{
+  //       if (count < slideList.length) {
+  //       return setCount(count + 1);
+  //       } else {
+  //       return  setCount(1);
+  //       }
+  //     });
+
+  //     handleSlider(count);
+
+  //     return () => clearTimeout(interval);
+  //   }, 6000);
+  // });
+
+  // const handleSlider = (count: number) => {
+  //   if (count === 5) {
+  //     slideRef.current.style.transform = "translateX(0)";
+  //   } else {
+  //     slideRef.current.style.transform = `translateX(-${
+  //       window.innerWidth * count
+  //     }px)`;
+  //   }
+  // };
 
   return (
     <Layout>
