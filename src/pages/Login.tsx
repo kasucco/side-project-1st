@@ -3,6 +3,7 @@ import styled from "styled-components";
 import MainCard from "../components/MainCard";
 import { useEffect } from "react";
 import Layout from "../common/Layout";
+import useInputs from "../Hooks/useInputs";
 
 export interface postCard {
   title: string;
@@ -14,12 +15,44 @@ export interface postCard {
   // map: string;
   partyMember: number;
 }
-
 const Login = () => {
+  // const [login, setLogin, onChangehandler] = useInputs(initialState);
+
+  // const postLogin = async (payload) => {
+  //   try {
+  //     const { data } = await loginApi.postLogin(payload);
+  //     console.log(data.nickName);
+  //     if (data.accessToken) {
+  //       setAlert(true);
+  //       sessionStorage.setItem("accessToken", data.accessToken, {
+  //         path: "/",
+  //       });
+  //       sessionStorage.setItem("refreshToken", data.refresh_token, {
+  //         path: "/",
+  //       });
+  //       sessionStorage.setItem("nickName", data.nickName);
+  //       setContent("환영합니다!");
+  //     }
+  //     setAddress("/main");
+  //   } catch (error) {
+  //     setAlert(true);
+  //     setContent("다시 로그인해주세요");
+  //     console.log(error);
+  //   }
+  // };
+
+  // const onSubmitHandler = (e) => {
+  //   e.preventDefault();
+  //   console.log(error);
+  //   postLogin(login);
+  // };
+
   return (
     <Layout>
       <MainBox className="Scroll">
-        <LoginBox>
+        <LoginForm
+        //  onSubmit={onSubmitHandler}
+        >
           <LoginTitle>로그인</LoginTitle>
           <InputCtn>
             <LoginInput placeholder="아이디를 입력하세요" />
@@ -29,7 +62,7 @@ const Login = () => {
             <Buttons>로그인</Buttons>
             <Buttons>회원가입</Buttons>
           </ButtonCtn>
-        </LoginBox>
+        </LoginForm>
       </MainBox>
     </Layout>
   );
@@ -48,7 +81,7 @@ const MainBox = styled.div`
   overflow-y: hidden;
 `;
 
-const LoginBox = styled.div`
+const LoginForm = styled.form`
   justify-content: center;
   height: 70%;
   width: 80%;

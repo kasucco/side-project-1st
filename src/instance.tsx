@@ -1,4 +1,5 @@
 import axios from "axios";
+import { FormValue } from "./pages/SignUp";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACK_SERVER,
@@ -22,7 +23,8 @@ axios.interceptors.request.use(
     // 오류 요청을 보내기전 수행할 일
     // ...
     return Promise.reject(error);
-  });
+  }
+);
 
 // 응답 인터셉터 추가
 axios.interceptors.response.use(
@@ -35,15 +37,16 @@ axios.interceptors.response.use(
     // 오류 응답을 처리
     // ...
     return Promise.reject(error);
-  });
+  }
+);
 
-  export const signUpApi = {
-    postSingup: (userinfo:string) => instance.post("/users/signup", userinfo),
-    DupNick: (userNickname:string) =>
-      instanceNoAuth.post("/users/Dup/Nick", userNickname),
-    DupId: (userId:string) => instanceNoAuth.post("/users/Dup/Id", userId),
-  };
-  
-  export const loginApi = {
-    postLogin: (userlogin:string) => instance.post("/users/login", userlogin),
-  };
+export const signUpApi = {
+  postSignUp: (userinfo: FormValue) => instance.post("/users/signUp", userinfo),
+  DupNick: (userNickname: string) =>
+    instanceNoAuth.post("/users/Dup/Nick", userNickname),
+  DupId: (userId: string) => instanceNoAuth.post("/users/Dup/Id", userId),
+};
+
+export const loginApi = {
+  postLogin: (userlogin: string) => instance.post("/users/login", userlogin),
+};
