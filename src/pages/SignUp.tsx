@@ -4,7 +4,8 @@ import MainCard from "../components/MainCard";
 import { useEffect } from "react";
 import Layout from "../common/Layout";
 import { signUpApi } from "../instance";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useRef } from "react";
 
 export interface postCard {
   title: string;
@@ -16,78 +17,120 @@ export interface postCard {
   // map: string;
   partyMember: number;
 }
-
+export interface FormValue {
+  userId: string;
+  nickName: string;
+  email: string;
+  password: string;
+  confirm: string;
+}
 const SignUp = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValue>();
 
-  // const [alert, setAlert] = useState(false);
-  // const [content, setContent] = useState<string>();
-  // const [address, setAddress] = useState<string>();
+  const passwordRef = useRef<string | null>(null);
+  passwordRef.current = watch("password");
 
-  // const postSignUp = async (payload) => {
-  //   try {
-  //     const data = await signUpApi.postSingup(payload);
-  //     console.log(data);
-  //     setAlert(true);
-  //     setContent("회원가입을 축하드립니다!");
-  //     setAddress("/");
-  //   } catch (error) {
-  //     alert(error.response.data.err);
-  //     setValue("nickName", "");
-  //   }
-  // };
+  const onSubmitHandler: SubmitHandler<FormValue> = (data) => {
+    console.log(data);
+
+    postSignUp({
+      userId: data.userId,
+      nickName: data.nickName,
+      email: data.email,
+      password: data.password,
+      confirm: data.confirm,
+    });
+  };
+
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState<string>();
+  const [address, setAddress] = useState<string>();
+
+  const postSignUp = async (payload: FormValue) => {
+    try {
+      const data = await signUpApi.postSignUp(payload);
+      console.log(data);
+      setAlert(true);
+      setContent("회원가입을 축하드립니다!");
+      setAddress("/");
+    } catch (error) {
+      // alert(error.response.data.err);
+      // setValue("nickName", "");
+    }
+  };
 
   return (
     <Layout>
       <MainBox className="Scroll">
         <LoginBox>
           <LoginTitle>회원가입</LoginTitle>
-          <InputCtn
-            onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}
-          >
+          <InputForm onSubmit={handleSubmit(onSubmitHandler)}>
             <InputBox>
               {" "}
-              <SignUpLabel>아이디</SignUpLabel>
+              <SignUpLabel>
+                아이디
+                {/* <span style={{ color: "red" }}>*</span> */}
+              </SignUpLabel>
               <SignUpInput
-                id="id"
+                id="userId"
                 type="text"
-                placeholder="아이디를 입력하세요"
-                {...register("id", {
+                {...register("userId", {
                   required: "아이디는 필수 입력입니다.",
-                  minLength: {
-                    value: 6,
-                    message: "6자리 이상 아이디를 사용하세요.",
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,10}$/,
+                    message: "영문 대소문자, 숫자 포함 4~10자리를 입력해주세요",
                   },
                 })}
               />
             </InputBox>
+            {errors.userId && errors.userId.type === "required" && (
+              <SignUpError>아이디는 필수 입력입니다</SignUpError>
+            )}
+            {errors.userId && errors.userId.type === "pattern" && (
+              <SignUpError>
+                영문 대소문자, 숫자 포함 4~10자리를 입력해주세요
+              </SignUpError>
+            )}
             <InputBox>
               {" "}
-              <SignUpLabel>닉네임</SignUpLabel>
+              <SignUpLabel>
+                닉네임
+                {/* <span style={{ color: "red" }}>*</span> */}
+              </SignUpLabel>
               <SignUpInput
-                id="nickName"
+                id="nickname"
                 type="text"
-                placeholder="닉네임를 입력하세요"
                 {...register("nickName", {
                   required: "닉네임은 필수 입력입니다.",
-                  minLength: {
-                    value: 2,
-                    message: "2자리 이상 닉네임을 사용하세요.",
+                  pattern: {
+                    value: /^[가-힣|a-z|A-Z|\d]{2,10}$/,
+                    message: "한글,영어대소문자,숫자 2~10자리를 입력해주세요",
                   },
                 })}
               />
             </InputBox>
+            {errors.nickName && errors.nickName.type === "required" && (
+              <SignUpError>닉네임은 필수 입력입니다</SignUpError>
+            )}
+            {errors.nickName && errors.nickName.type === "pattern" && (
+              <SignUpError>
+                한글,영어대소문자,숫자 2~10자리를 입력해주세요
+              </SignUpError>
+            )}
             <InputBox>
               {" "}
-              <SignUpLabel>이메일</SignUpLabel>
+              <SignUpLabel>
+                이메일
+                {/* <span style={{ color: "red" }}>*</span> */}
+              </SignUpLabel>
               <SignUpInput
                 id="email"
                 type="email"
-                placeholder="이메일를 입력하세요"
                 {...register("email", {
                   required: "이메일은 필수 입력입니다.",
                   pattern: {
@@ -96,38 +139,62 @@ const SignUp = () => {
                   },
                 })}
               />
-              {/* {errors.email && <small role="alert">{errors.email.message}</small>} */}
-            </InputBox>
+              {/* {errors.email && <small role="alert">{errors.email.pattern.message}</small>} */}
+            </InputBox>{" "}
+            {errors.email && errors.email.type === "required" && (
+              <SignUpError>이메일은 필수 입력입니다</SignUpError>
+            )}
+            {errors.email && errors.email.type === "pattern" && (
+              <SignUpError>이메일 형식에 맞지 않습니다</SignUpError>
+            )}
             <InputBox>
               {" "}
-              <SignUpLabel>비밀번호</SignUpLabel>
+              <SignUpLabel>
+                비밀번호
+                {/* <span style={{ color: "red" }}>*</span> */}
+              </SignUpLabel>
               <SignUpInput
                 id="password"
-                type="password"
-                placeholder="비밀번호를 입력하세요"
+                type="string"
                 {...register("password", {
                   required: "비밀번호는 필수 입력입니다.",
-                  minLength: {
-                    value: 8,
-                    message: "8자리 이상 비밀번호를 사용하세요.",
-                  },
+                  // pattern: {
+                  //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,20}$/,
+                  //   message: "영문 대소문자, 숫자 포함 4~20자리를 입력해주세요",
+                  // },
                 })}
               />
             </InputBox>
+            {errors.password && errors.password.type === "required" && (
+              <SignUpError>비밀번호는 필수 입력입니다</SignUpError>
+            )}
+            {errors.password && errors.password.type === "pattern" && (
+              <SignUpError>
+                영문 대소문자, 숫자 포함 4~20자리를 입력해주세요
+              </SignUpError>
+            )}
             <InputBox>
               {" "}
-              <SignUpLabel>비밀번호 확인</SignUpLabel>
+              <SignUpLabel>
+                비밀번호 확인
+                {/* <span style={{ color: "red" }}>*</span> */}
+              </SignUpLabel>
               <SignUpInput
-                id="password"
-                type="password"
-                placeholder="비밀번호를 한번 더 입력하세요"
-                {...register("password")}
+                id="passwordConfirm"
+                type="string"
+                {...register("confirm", {
+                  required: "비밀번호는 필수 입력입니다.",
+                  // validate: (value) => value === passwordRef.current,
+                })}
               />
             </InputBox>
+            {errors.confirm && errors.confirm.type === "validate" && (
+              <SignUpError>비밀번호와 다릅니다</SignUpError>
+            )}
             <ButtonCtn>
               <Buttons type="submit">가입 완료</Buttons>
             </ButtonCtn>{" "}
-          </InputCtn>
+          </InputForm>
         </LoginBox>
       </MainBox>
     </Layout>
@@ -148,7 +215,10 @@ const MainBox = styled.div`
 `;
 
 const LoginBox = styled.div`
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   height: 70%;
   width: 80%;
   margin: 20% 10% 10% 10%;
@@ -156,14 +226,18 @@ const LoginBox = styled.div`
 `;
 
 const LoginTitle = styled.div`
-  position: relative;
+  position: absolute;
   top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   font-size: 40px;
 `;
 
-const InputCtn = styled.form`
+const InputForm = styled.form`
   /* background-color: green; */
+  /* display: flex; */
+  /* flex-direction: column; */
   position: absolute;
   top: 20%;
   height: 20%;
@@ -171,18 +245,22 @@ const InputCtn = styled.form`
 
 const InputBox = styled.div`
   display: flex;
+  align-items: center;
+  margin-top: 2px;
+  /* background-color: gray; */
 `;
 const SignUpLabel = styled.label`
   /* background-color: brown; */
   width: 40%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  word-break: normal;
+  /* justify-content: center; */
+  /* align-items: center; */
   font-size: 20px;
 `;
 const SignUpInput = styled.input`
   display: block;
-  width: 70%;
+  width: 100%;
   height: 10%;
   margin: 5% 5% 5% 5%;
   border-radius: 5px;
@@ -191,18 +269,34 @@ const SignUpInput = styled.input`
   border: 3px solid gray;
   background-color: #e4ccff;
 `;
+const SignUpError = styled.div`
+  display: flex;
+  color: red;
+  /* vertical-align: middle; */
+  /* width: 70%;
+  height: 10%;
+  margin: 5% 5% 5% 5%;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 20px;
+  border: 3px solid gray;
+  background-color: #e4ccff; */
+`;
 
 const ButtonCtn = styled.div`
   display: flex;
   justify-content: space-around;
   /* background-color: blue; */
   position: absolute;
-  top: 90%;
-  height: 5%;
+  top: 150%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 15%;
   width: 80%;
 `;
 const Buttons = styled.button`
   width: 35%;
+  /* height: 100%; */
   border-radius: 25px;
   border: none;
   font-size: 20px;
