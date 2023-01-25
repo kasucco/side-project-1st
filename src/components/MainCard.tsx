@@ -1,18 +1,18 @@
 import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { postCard } from "../pages/Main";
+import { getCard } from "../pages/Main";
 
 type itemProps = {
-  item: postCard;
-  setItems: Dispatch<SetStateAction<postCard[] | null>>;
+  item: getCard;
+  setItems: Dispatch<SetStateAction<getCard[]>>;
 };
 
 const MainCard = ({ item, setItems }: itemProps) => {
   const navigaete = useNavigate();
-  const { title, content, location, date, time, partyMember } = item;
+  const { _id, title, content, location, date, time, partySize } = item;
   return (
-    <Wrap onClick={() => navigaete(`/detail`, {})}>
+    <Wrap onClick={() => navigaete(`/detail/${_id}`, {})}>
       <ContentBox top={10} fontSize={30}>
         {" "}
         {title}
@@ -22,7 +22,7 @@ const MainCard = ({ item, setItems }: itemProps) => {
       {/* <ContentBox top={80}> {time}</ContentBox> */}
       <ContentBox top={80}>
         인원:
-        {partyMember}
+        {partySize}
       </ContentBox>
     </Wrap>
   );

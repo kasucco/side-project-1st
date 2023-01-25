@@ -1,7 +1,11 @@
 import Layout from "../common/Layout";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 
 const Detail = () => {
+  const param = useParams();
+
+  console.log(param);
   return (
     <Layout>
       <MainBox>

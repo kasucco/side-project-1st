@@ -4,59 +4,64 @@ import MainCard from "../components/MainCard";
 import { useEffect } from "react";
 import Layout from "../common/Layout";
 import useInputs from "../Hooks/useInputs";
+import { loginApi } from "../instance";
 
-export interface postCard {
-  title: string;
-  content: string;
-  location: string;
-  cafe: string;
-  date: string;
-  time: string;
-  // map: string;
-  partyMember: number;
+export interface userState {
+  userId?: string;
+  password?: string;
 }
+
 const Login = () => {
-  // const [login, setLogin, onChangehandler] = useInputs(initialState);
+  const [userId, setUserId, onChangeUserId] = useInputs<string>("");
+  const [password, setPassword, onChangePassword] = useInputs<string>("");
+  const [error, setError] = useState();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState<string>();
+  const [address, setAddress] = useState<string>();
 
-  // const postLogin = async (payload) => {
-  //   try {
-  //     const { data } = await loginApi.postLogin(payload);
-  //     console.log(data.nickName);
-  //     if (data.accessToken) {
-  //       setAlert(true);
-  //       sessionStorage.setItem("accessToken", data.accessToken, {
-  //         path: "/",
-  //       });
-  //       sessionStorage.setItem("refreshToken", data.refresh_token, {
-  //         path: "/",
-  //       });
-  //       sessionStorage.setItem("nickName", data.nickName);
-  //       setContent("환영합니다!");
-  //     }
-  //     setAddress("/main");
-  //   } catch (error) {
-  //     setAlert(true);
-  //     setContent("다시 로그인해주세요");
-  //     console.log(error);
-  //   }
-  // };
+  const postLogin = async (payload: userState) => {
+    try {
+      const { data } = await loginApi.postLogin(payload);
+      console.log(data.nickName);
+      if (data.accessToken) {
+        setAlert(true);
+        sessionStorage.setItem("accessToken", data.accessToken);
+        sessionStorage.setItem("refreshToken", data.refresh_token);
+        sessionStorage.setItem("nickName", data.nickName);
+        setContent("환영합니다!");
+      }
+      setAddress("/main");
+    } catch (error) {
+      setAlert(true);
+      setContent("다시 로그인해주세요");
+      console.log(error);
+    }
+  };
 
-  // const onSubmitHandler = (e) => {
-  //   e.preventDefault();
-  //   console.log(error);
-  //   postLogin(login);
-  // };
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(error);
+    postLogin({ userId: userId, password: password });
+  };
 
   return (
     <Layout>
       <MainBox className="Scroll">
-        <LoginForm
-        //  onSubmit={onSubmitHandler}
-        >
+        <LoginForm onSubmit={onSubmitHandler}>
           <LoginTitle>로그인</LoginTitle>
           <InputCtn>
-            <LoginInput placeholder="아이디를 입력하세요" />
-            <LoginInput placeholder="비밀번호를 입력하세요" />
+            <LoginInput
+              value={userId}
+              name="userId"
+              onChange={setUserId}
+              placeholder="아이디를 입력하세요"
+            />
+            <LoginInput
+              value={password}
+              name="userId"
+              onChange={setPassword}
+              placeholder="비밀번호를 입력하세요"
+            />
           </InputCtn>
           <ButtonCtn>
             <Buttons>로그인</Buttons>
