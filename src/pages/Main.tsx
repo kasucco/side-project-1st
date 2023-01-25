@@ -3,17 +3,15 @@ import styled from "styled-components";
 import MainCard from "../components/MainCard";
 import { useEffect } from "react";
 import Layout from "../common/Layout";
-
-export interface postCard {
-  title: string;
-  content: string;
-  location: string;
-  date: string;
-  time: string;
-  partyMember: number;
+import { postsApi } from "../instance";
+import { useInView } from "react-intersection-observer";
+import { postCard } from "./SignUp";
+import { useNavigate } from "react-router-dom";
+export interface getCard extends postCard {
+  _id: string;
 }
-
 const Main = () => {
+  const navigate = useNavigate();
   // 토글 여부를 결정하는 state 선언
   const [toggleBtn, setToggleBtn] = useState<boolean>(true);
 
@@ -39,69 +37,76 @@ const Main = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const [items, setItems] = useState<postCard[] | null>([
+  const target = useRef(null);
+  const [initialItems, setInitialItems] = useState([]);
+  const [items, setItems] = useState<getCard[]>([
     {
+      _id: "1",
       title: "제목입니다",
       content: "내용입니다1",
       location: "3",
       date: "2022/1/16~2022/1/17",
-      time: "15:00~16:00",
-      partyMember: 7,
+      time: [new Date(), new Date()],
+      map: "stirng",
+      partySize: 7,
     },
     {
+      _id: "1",
       title: "제목입니다",
       content: "내용입니다2",
       location: "2",
       date: "2022/1/16~2022/1/17",
-      time: "15:00~16:00",
-      partyMember: 2,
+      time: [new Date(), new Date()],
+      map: "stirng",
+      partySize: 2,
     },
-    {
-      title: "제목입니다",
-      content: "내용입니다3",
-      location: "3",
-      date: "2022/1/16~2022/1/17",
-      time: "15:00~16:00",
-      partyMember: 7,
-    },
-    {
-      title: "제목입니다",
-      content: "내용입니다4",
-      location: "3",
-      date: "2022/1/16~2022/1/17",
-      time: "15:00~16:00",
-      partyMember: 7,
-    },
+    // {
+    //   _id: "1",
+    //   title: "제목입니다",
+    //   content: "내용입니다3",
+    //   location: "3",
+    //   date: "2022/1/16~2022/1/17",
+    //   time: [new Date(), new Date()],
+    //   map: "stirng",
+    //   partySize: 7,
+    // },
+    // {
+    //   _id: "1",
+    //   title: "제목입니다",
+    //   content: "내용입니다4",
+    //   location: "3",
+    //   date: "2022/1/16~2022/1/17",
+    //   time: [new Date(), new Date()],
+    //   map: "stirng",
+    //   partySize: 7,
+    // },
   ]);
-  // const slideRef = useRef();
-  // const [count, setCount] = useState(1);
-  // const [slideList, setSlideList] = useState<object[] | undefined>([]);
 
-  // useEffect(() => {
-  //   const interval = setTimeout(() => {
-  //     setCount(() =>{
-  //       if (count < slideList.length) {
-  //       return setCount(count + 1);
-  //       } else {
-  //       return  setCount(1);
-  //       }
-  //     });
+  //? -------------------------- 무한스크롤 -------------------------
 
-  //     handleSlider(count);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  let page = useRef(1);
+  const getData = async () => {
+    try {
+      const response = await postsApi.getPosts(page.current);
+      setItems((prev) => prev.concat(response.data.data));
+      setInitialItems((prev) => prev.concat(response.data.data));
+      setHasNextPage(response.data.data.length == 5);
+      page.current += 5;
+    } catch (error) {}
+  };
 
-  //     return () => clearTimeout(interval);
-  //   }, 6000);
-  // });
-
-  // const handleSlider = (count: number) => {
-  //   if (count === 5) {
-  //     slideRef.current.style.transform = "translateX(0)";
-  //   } else {
-  //     slideRef.current.style.transform = `translateX(-${
-  //       window.innerWidth * count
-  //     }px)`;
-  //   }
-  // };
+  const { ref, inView } = useInView({
+    // 라이브러리 옵션
+    //threshold는 ref타겟의 모습이 0~1만큼의 모습이 보이면 inview가 작동하는 값
+    threshold: 0.1,
+  });
+  useEffect(() => {
+    //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
+    if (inView && hasNextPage) {
+      getData();
+    }
+  }, [hasNextPage, inView]);
 
   return (
     <Layout>
@@ -115,8 +120,8 @@ const Main = () => {
             <MainCard key={idx} item={item} setItems={setItems}></MainCard>
           );
         })}
-        {/* <Target ref={ref}>target? </Target>{" "} */}
-        {/* </MainListCtn>{" "} */}
+        <div ref={ref}>target? </div> {/* </MainListCtn>{" "} */}
+        <FormButton onClick={() => navigate(`/form`)}></FormButton>
       </MainBox>
     </Layout>
   );
@@ -173,3 +178,17 @@ const MainBox = styled.div`
 //   overflow-y: hidden;
 //   overflow-y: scroll;
 // `;
+const FormButton = styled.button`
+  position: fixed;
+  bottom: 10%;
+  left: 72%;
+  background-color: purple;
+  border: none;
+  color: white;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  :hover {
+    cursor: pointer;
+  }
+`;

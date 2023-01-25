@@ -11,11 +11,10 @@ export interface postCard {
   title: string;
   content: string;
   location: string;
-  cafe: string;
-  date: string;
-  time: string;
-  // map: string;
-  partyMember: number;
+  date: string | null | undefined;
+  time: [Date | null | undefined, Date | null | undefined];
+  map: string;
+  partySize: number;
 }
 export interface FormValue {
   userId: string;
