@@ -102,3 +102,10 @@ export const postsApi = {
   // updatePost: (payload) =>
   //   instance.patch(`/posts/${payload.postId}`, payload.post),
 };
+export const ChattingApi = {
+  getChat: (payload: string) => instance.get(`/chat/${payload}`),
+};
+
+export const userApi = {
+  // getUser: () => instance.get()
+};
