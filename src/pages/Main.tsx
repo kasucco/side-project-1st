@@ -85,7 +85,7 @@ const Main = () => {
   //? -------------------------- 무한스크롤 -------------------------
 
   const [hasNextPage, setHasNextPage] = useState(true);
-  let page = useRef(1);
+  let page = useRef(0);
   const getData = async () => {
     try {
       const response = await postsApi.getPosts(page.current);
@@ -107,7 +107,7 @@ const Main = () => {
       getData();
     }
   }, [hasNextPage, inView]);
-
+  console.log(items);
   return (
     <Layout>
       <MainBox className="Scroll">

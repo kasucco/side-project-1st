@@ -1,15 +1,64 @@
 import Layout from "../common/Layout";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { postsApi } from "../instance";
+import { ContentBoxProps } from "../components/MainCard";
 
 const Detail = () => {
+  const navigate = useNavigate();
   const param = useParams();
 
   console.log(param);
+  const [detail, setDetail] = useState({
+    _id: "",
+    title: "",
+    content: "",
+    location: "",
+    date: "",
+    time: [,],
+    map: "",
+    partySize: null,
+  });
+
+  const getDetail = async (payload: string | undefined) => {
+    try {
+      if (payload) {
+        const { data } = await postsApi.getDetailId(payload);
+        setDetail(data.data);
+        console.log(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(detail);
+  useEffect(() => {
+    getDetail(param?.id);
+  }, []);
+
   return (
     <Layout>
       <MainBox>
-        <Wrap></Wrap>
+        <Wrap>
+          <ButtonCtn>
+            <Buttons onClick={() => navigate(`/chat/${param.id}`)}>
+              채팅바로가기
+            </Buttons>
+          </ButtonCtn>
+          <ContentBox top={10} fontSize={30}>
+            {" "}
+            {detail?.title}
+          </ContentBox>
+          <ContentBox top={20}>장소 : {detail?.location}</ContentBox>
+          <ContentBox top={30}>날짜 : {detail?.date}</ContentBox>
+          {/* <ContentBox top={80}> {time}</ContentBox> */}
+          <ContentBox top={40}>
+            인원:
+            {detail?.partySize}
+          </ContentBox>
+        </Wrap>
       </MainBox>
     </Layout>
   );
@@ -40,4 +89,35 @@ const Wrap = styled.div`
   :hover {
     box-shadow: 0px 0px 0px 0px;
   }
+`;
+const ContentBox = styled.div<ContentBoxProps>`
+  /* background-color: ivory; */
+  height: 10%;
+  width: 50%;
+  font-size: ${(props) => props.fontSize || 18}px;
+  text-align: center;
+  position: absolute;
+  top: ${(props) => props.top}%;
+  left: ${(props) => props.left || 30}%;
+  transform: translate(-50%, -50%);
+`;
+const ButtonCtn = styled.div`
+  display: flex;
+  justify-content: space-around;
+  /* background-color: blue; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 5%;
+  width: 80%;
+`;
+const Buttons = styled.button`
+  width: 35%;
+  /* height: 100%; */
+  border-radius: 25px;
+  border: none;
+  font-size: 20px;
+  background-color: #9747ff;
+  color: white;
 `;

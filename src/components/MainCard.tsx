@@ -45,7 +45,7 @@ const Wrap = styled.div`
   }
 `;
 
-interface ContentBoxProps {
+export interface ContentBoxProps {
   top: number;
   left?: number;
   fontSize?: number;
