@@ -7,30 +7,41 @@ import axios from "axios";
 import { ChattingApi } from "../instance";
 import { useEffect } from "react";
 import useInputs from "../Hooks/useInputs";
+import { ChangeEvent, useState } from "react";
+import { useRef } from "react";
 const Chat = () => {
   const nickName = sessionStorage.getItem("nickName");
-  const { param } = useParams();
-  const socket = io(process.env.REACT_APP_BACK_SERVER);
-  const [message, setMessage, onChange] = useInputs();
+  const param = useParams() as { id: string };
+  const socket = io("http://35.162.250.189");
+  const [message, setMessage, onChange] = useInputs<
+    ChangeEvent<HTMLInputElement> | string
+  >("");
+  const [chatArr, setChatArr] = useState([]);
 
-  const onSubmitHandler = (e) => {
+  //채팅이 갱신될 때마다 맨 밑으로 내리기
+  const scrollRef = useRef<null | HTMLDivElement>(null);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatArr]);
+
+  //보내기 버튼 눌렀을 때
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (message.trim("").length !== 0) {
-      socket.emit("chatMessage", {
-        nickName: nickName,
-        message: message,
-        room: param.id,
-        userAvatar: "temporary",
-      });
-    } else {
-      alert("메세지를 입력해주세요");
-    }
-    setMessage({ message: "" });
+
+    socket.emit("chatMessage", {
+      nickName: nickName,
+      message: message,
+      room: param.id,
+      userAvatar: "temporary",
+    });
   };
-  const getChat = async (payload) => {
+
+  //채팅 가져오기
+  const getChat = async (payload: string) => {
     try {
       const { data } = await ChattingApi.getChat(payload);
       console.log(data);
+      roomSubmit();
     } catch (error) {
       console.log(error);
     }
@@ -38,6 +49,14 @@ const Chat = () => {
   useEffect(() => {
     getChat(param.id);
   }, []);
+
+  const roomSubmit = () => {
+    socket.emit("joinRoom", {
+      nickName: nickName,
+      userAvatar: "temporary",
+      room: param.id,
+    });
+  };
 
   return (
     <Layout>
