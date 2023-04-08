@@ -11,8 +11,10 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import TextField from "@mui/material/TextField";
 import dayjs, { Dayjs } from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
+  const navigate = useNavigate();
   const [value, setValue] = React.useState<Dayjs | null | undefined>(
     dayjs("2023-08-18T21:11:54")
   );
@@ -199,6 +201,7 @@ const Form = () => {
             )}
             <ButtonCtn>
               <Buttons type="submit">작성완료</Buttons>
+              <Buttons onClick={() => navigate(`/`)}>돌아가기</Buttons>
             </ButtonCtn>{" "}
           </InputForm>
         </LoginBox>
