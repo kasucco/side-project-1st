@@ -34,10 +34,10 @@ const MainCard = ({ item, setItems }: itemProps) => {
 export default MainCard;
 
 const Wrap = styled.div`
-  height: 10%;
+  min-height: 20%;
   background-color: #e4ccff;
   width: 90%;
-  margin: 5% 5% 5% 5%;
+  margin: 5% 5% 0% 5%;
   /* display: flex; */
   position: relative;
   border-radius: 5%;

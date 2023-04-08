@@ -181,7 +181,7 @@ const MainBox = styled.div`
 const FormButton = styled.button`
   position: fixed;
   bottom: 10%;
-  left: 72%;
+  left: 62%;
   background-color: purple;
   border: none;
   color: white;

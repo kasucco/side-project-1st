@@ -299,16 +299,16 @@ const ButtonCtn = styled.div`
   display: flex;
   justify-content: space-around;
   /* background-color: blue; */
-  position: absolute;
-  top: 150%;
+  position: relative;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 15%;
+  height: 25%;
   width: 90%;
 `;
 const Buttons = styled.button`
   width: 35%;
-  /* height: 100%; */
+  height: 100%;
   border-radius: 25px;
   border: none;
   font-size: 20px;

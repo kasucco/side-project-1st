@@ -26,6 +26,7 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  height: 100%;
   background-color: #554979;
   z-index: -1;
   &.logo {
