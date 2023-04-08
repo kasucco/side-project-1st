@@ -9,12 +9,19 @@ import { useEffect } from "react";
 import useInputs from "../Hooks/useInputs";
 import { ChangeEvent, useState } from "react";
 import { useRef } from "react";
+
+interface chatInfo {
+  nickName: string;
+  message?: string;
+  room: string;
+  userAvatar: string;
+}
 const Chat = () => {
   const nickName = sessionStorage.getItem("nickName");
   const param = useParams() as { id: string };
   const socket = io("http://35.162.250.189");
-  const [message, setMessage, onChange] = useInputs<
-    ChangeEvent<HTMLInputElement> | string
+  const [message, onChangeHandler, setMessage] = useInputs<
+    string | number | readonly string[] | undefined
   >("");
   const [chatArr, setChatArr] = useState([]);
 
@@ -67,7 +74,7 @@ const Chat = () => {
               placeholder="메세지를 입력하세요"
               value={message}
               name="message"
-              onChange={onChange}
+              onChange={onChangeHandler}
             />
             <Buttons>보내기</Buttons>
           </ChatForm>
