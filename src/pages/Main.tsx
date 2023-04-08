@@ -141,7 +141,7 @@ const MainBox = styled.div`
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 `;
 
 // const MainHeader = styled.div`
