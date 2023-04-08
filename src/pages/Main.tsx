@@ -7,6 +7,7 @@ import { postsApi } from "../instance";
 import { useInView } from "react-intersection-observer";
 import { postCard } from "./SignUp";
 import { useNavigate } from "react-router-dom";
+import CreateIcon from "@mui/icons-material/Create";
 export interface getCard extends postCard {
   _id: string;
 }
@@ -121,7 +122,9 @@ const Main = () => {
           );
         })}
         <div ref={ref}>target? </div> {/* </MainListCtn>{" "} */}
-        <FormButton onClick={() => navigate(`/form`)}></FormButton>
+        <FormButton onClick={() => navigate(`/form`)}>
+          <CreateIcon />
+        </FormButton>
       </MainBox>
     </Layout>
   );
