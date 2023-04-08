@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getCard } from "../pages/Main";
+import dayjs from "dayjs";
 
 type itemProps = {
   item: getCard;
@@ -18,7 +19,9 @@ const MainCard = ({ item, setItems }: itemProps) => {
         {title}
       </ContentBox>
       <ContentBox top={40}>장소 : {location}</ContentBox>
-      <ContentBox top={60}>날짜 : {date}</ContentBox>
+      <ContentBox top={60}>
+        날짜 : {dayjs(date).format("YYYY-MM-DD")}
+      </ContentBox>
       {/* <ContentBox top={80}> {time}</ContentBox> */}
       <ContentBox top={80}>
         인원:
