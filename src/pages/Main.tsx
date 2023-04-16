@@ -111,21 +111,16 @@ const Main = () => {
   console.log(items);
   return (
     <Layout>
-      <MainBox className="Scroll">
-        {/* <MainHeader onClick={() => scrollToTop()}>
+      {/* <MainBox className="Scroll"> */}
+      {/* <MainHeader onClick={() => scrollToTop()}>
           <div className="headtxt">파티모집</div>
         </MainHeader> */}
-        {/* <MainListCtn> */}
-        {items?.map((item, idx) => {
-          return (
-            <MainCard key={idx} item={item} setItems={setItems}></MainCard>
-          );
-        })}
-        <div ref={ref}>target? </div> {/* </MainListCtn>{" "} */}
-        <FormButton onClick={() => navigate(`/form`)}>
-          <CreateIcon />
-        </FormButton>
-      </MainBox>
+      {/* <MainListCtn> */}
+      {items?.map((item, idx) => {
+        return <MainCard key={idx} item={item} setItems={setItems}></MainCard>;
+      })}
+      <div ref={ref}></div> {/* </MainListCtn>{" "} */}
+      {/* </MainBox> */}
     </Layout>
   );
 };

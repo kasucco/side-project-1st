@@ -41,7 +41,7 @@ const Wrap = styled.div`
   /* display: flex; */
   position: relative;
   border-radius: 5%;
-  justify-content: center;
+  /* justify-content: center; */
   box-shadow: 0 5px 18px -7px rgba(0, 0, 0, 1);
   :hover {
     box-shadow: 0px 0px 0px 0px;
@@ -58,7 +58,7 @@ const ContentBox = styled.div<ContentBoxProps>`
   height: 10%;
   width: 50%;
   font-size: ${(props) => props.fontSize || 18}px;
-  text-align: center;
+  /* text-align: center; */
   position: absolute;
   top: ${(props) => props.top}%;
   left: ${(props) => props.left || 30}%;
