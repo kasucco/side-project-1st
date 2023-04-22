@@ -7,6 +7,7 @@ import { postsApi } from "../instance";
 import { useInView } from "react-intersection-observer";
 import { postCard } from "./SignUp";
 import { useNavigate } from "react-router-dom";
+import CreateIcon from "@mui/icons-material/Create";
 export interface getCard extends postCard {
   _id: string;
 }
@@ -110,19 +111,16 @@ const Main = () => {
   console.log(items);
   return (
     <Layout>
-      <MainBox className="Scroll">
-        {/* <MainHeader onClick={() => scrollToTop()}>
+      {/* <MainBox className="Scroll"> */}
+      {/* <MainHeader onClick={() => scrollToTop()}>
           <div className="headtxt">파티모집</div>
         </MainHeader> */}
-        {/* <MainListCtn> */}
-        {items?.map((item, idx) => {
-          return (
-            <MainCard key={idx} item={item} setItems={setItems}></MainCard>
-          );
-        })}
-        <div ref={ref}>target? </div> {/* </MainListCtn>{" "} */}
-        <FormButton onClick={() => navigate(`/form`)}></FormButton>
-      </MainBox>
+      {/* <MainListCtn> */}
+      {items?.map((item, idx) => {
+        return <MainCard key={idx} item={item} setItems={setItems}></MainCard>;
+      })}
+      <div ref={ref}></div> {/* </MainListCtn>{" "} */}
+      {/* </MainBox> */}
     </Layout>
   );
 };
@@ -138,7 +136,7 @@ const MainBox = styled.div`
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 `;
 
 // const MainHeader = styled.div`
@@ -181,7 +179,7 @@ const MainBox = styled.div`
 const FormButton = styled.button`
   position: fixed;
   bottom: 10%;
-  left: 72%;
+  left: 62%;
   background-color: purple;
   border: none;
   color: white;

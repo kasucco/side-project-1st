@@ -1,32 +1,66 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { CgProfile } from "react-icons/cg";
-import { CgHome } from "react-icons/cg";
-// import { GoGraph } from "react-icons/go";
-import { GoSearch } from "react-icons/go";
-// import logo from "../Assets/temporaryLogo-removebg-preview.png";
 
 const Header = () => {
   const navigate = useNavigate();
   return (
     <HeaderCtn>
       {" "}
-      <GoSearch size="80%" color="white" onClick={() => navigate("/")} />
-      {/* <GoGraph size="80%" color="white" onClick={() => navigate("/rank")} /> */}
-      <CgHome size="80%" color="white" onClick={() => navigate("/")} />
-      {/* <img src={logo} alt={"avatarshop"} onClick={() => navigate("/avatar")} /> */}
-      <CgProfile size="90%" color="white" onClick={() => navigate("/Login")} />
+      <CursorDiv>
+        <RegisterImage
+          src="../img/registerImgNoBg.png"
+          alt="register"
+          height="40vh"
+          onClick={() => navigate("/form")}
+        />
+      </CursorDiv>
+      <LogoImage
+        src="../img/eyesLogo.png"
+        alt="home"
+        height="60vh"
+        onClick={() => navigate("/")}
+      />
+      <div>
+        <img
+          src="../img/myPartyImgNoBg.png"
+          alt="myParty"
+          height="50vh"
+          onClick={
+            () => alert("개발중")
+            // navigate("/Login")
+          }
+        />
+        <img
+          src="../img/myPageImg.png"
+          alt="myPage"
+          height="50vh"
+          onClick={() => navigate("/Login")}
+        />
+      </div>
     </HeaderCtn>
   );
 };
-
+const CursorDiv = styled.div`
+  :hover {
+    cursor: pointer;
+  }
+`;
+const RegisterImage = styled.img`
+  position: relative;
+  left: 20px;
+`;
+const LogoImage = styled.img`
+  z-index: 1200;
+  position: relative;
+  left: 20px;
+`;
 const HeaderCtn = styled.div`
   width: 100%;
   top: 0;
   position: relative;
   z-index: 999;
-  height: 4vh;
+  height: 10vh;
   background-color: #9747ff;
   display: flex;
   justify-content: space-between;

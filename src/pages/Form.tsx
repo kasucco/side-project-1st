@@ -11,8 +11,10 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import TextField from "@mui/material/TextField";
 import dayjs, { Dayjs } from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
+  const navigate = useNavigate();
   const [value, setValue] = React.useState<Dayjs | null | undefined>(
     dayjs("2023-08-18T21:11:54")
   );
@@ -199,6 +201,7 @@ const Form = () => {
             )}
             <ButtonCtn>
               <Buttons type="submit">작성완료</Buttons>
+              <Buttons onClick={() => navigate(`/`)}>돌아가기</Buttons>
             </ButtonCtn>{" "}
           </InputForm>
         </LoginBox>
@@ -296,16 +299,16 @@ const ButtonCtn = styled.div`
   display: flex;
   justify-content: space-around;
   /* background-color: blue; */
-  position: absolute;
-  top: 150%;
+  position: relative;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 15%;
+  height: 25%;
   width: 90%;
 `;
 const Buttons = styled.button`
   width: 35%;
-  /* height: 100%; */
+  height: 100%;
   border-radius: 25px;
   border: none;
   font-size: 20px;

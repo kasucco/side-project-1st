@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getCard } from "../pages/Main";
+import dayjs from "dayjs";
 
 type itemProps = {
   item: getCard;
@@ -18,7 +19,9 @@ const MainCard = ({ item, setItems }: itemProps) => {
         {title}
       </ContentBox>
       <ContentBox top={40}>장소 : {location}</ContentBox>
-      <ContentBox top={60}>날짜 : {date}</ContentBox>
+      <ContentBox top={60}>
+        날짜 : {dayjs(date).format("YYYY-MM-DD")}
+      </ContentBox>
       {/* <ContentBox top={80}> {time}</ContentBox> */}
       <ContentBox top={80}>
         인원:
@@ -31,14 +34,14 @@ const MainCard = ({ item, setItems }: itemProps) => {
 export default MainCard;
 
 const Wrap = styled.div`
-  height: 10%;
+  min-height: 20%;
   background-color: #e4ccff;
   width: 90%;
-  margin: 5% 5% 5% 5%;
+  margin: 5% 5% 0% 5%;
   /* display: flex; */
   position: relative;
   border-radius: 5%;
-  justify-content: center;
+  /* justify-content: center; */
   box-shadow: 0 5px 18px -7px rgba(0, 0, 0, 1);
   :hover {
     box-shadow: 0px 0px 0px 0px;
@@ -55,7 +58,7 @@ const ContentBox = styled.div<ContentBoxProps>`
   height: 10%;
   width: 50%;
   font-size: ${(props) => props.fontSize || 18}px;
-  text-align: center;
+  /* text-align: center; */
   position: absolute;
   top: ${(props) => props.top}%;
   left: ${(props) => props.left || 30}%;

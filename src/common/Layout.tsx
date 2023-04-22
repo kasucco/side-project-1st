@@ -10,7 +10,7 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <Wrap>
       <Header />
-      {/* <LogoBox src={require("../Assets/temporaryLogo.png").default} /> */}
+      {/* <LogoBox src="../img/eyesLogo.png" /> */}
       <Container>{children}</Container>
     </Wrap>
   );
@@ -20,12 +20,13 @@ export default Layout;
 
 const Wrap = styled.div`
   top: 0;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100vw;
+  height: 100vh;
   background-color: #554979;
   z-index: -1;
   &.logo {
@@ -34,20 +35,20 @@ const Wrap = styled.div`
   }
 `;
 
-// const LogoBox = styled.img`
-//   @media only screen and (min-width: 1200px) {
-//     display: block;
-//     position: absolute;
-//     width: 20%;
-//     /* left: 13%; */
-//     top: 35%;
-//   }
-//   display: none;
-// `;
+const LogoBox = styled.img`
+  @media only screen and (min-width: 1200px) {
+    display: block;
+    position: absolute;
+    width: 20%;
+    /* left: 13%; */
+    top: 35%;
+  }
+  display: none;
+`;
 
 const Container = styled.div`
-  background-color: gray;
-  z-index: 999;
+  background-color: #dcf3e7;
+  /* z-index: 999; */
   position: relative;
   overflow-x: hidden;
   width: 100%;
@@ -58,6 +59,10 @@ const Container = styled.div`
   align-items: center;
   border-left: 2px solid var(--primary);
   border-right: 2px solid var(--primary);
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   /* @media only screen and (min-width: 50vw) {
     margin-left: 25%;
   } */
